@@ -7,12 +7,11 @@ Why?
 ----
 Unless you've been living under a rock for a while, you've had heard of the BREACH attack against SSL. It's detailed here: http://breachattack.com/
 Now if you've read the paper, I know what you're thinking - the original researchers suggested random padding wasn't a great mitigation. Here's what they said:
-`While this measure does make the attack take longer, it does so only slightly.
-The countermeasure requires the attacker to issue more requests, and measure the
-sizes of more responses, but not enough to make the attack infeasible.`
+> While this measure does make the attack take longer, it does so only slightly.
+> The countermeasure requires the attacker to issue more requests, and measure the sizes of more responses, but not enough to make the attack infeasible.`
 
 Whilst we're on topic of mitigations, here's what they said about another one - rate limiting SSL:
-`By monitoring the volume of traffic per user, and potentially eventually throttling users, the attack can at least be slowed down signicantly.`
+> By monitoring the volume of traffic per user, and potentially eventually throttling users, the attack can at least be slowed down signicantly.
 
 So this is where we ask, what would make a useful mitigation, in the form of rate limiting SSL, even more effecient, if not adding a few zeroes to the number of requests an attacker needs to make?
 
