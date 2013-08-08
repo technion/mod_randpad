@@ -101,12 +101,16 @@ static void
 ngx_http_randpad(ngx_http_randpad_ctx_t *ctx, ngx_http_request_t *r)
 {
     
-	char buf[2048];
-    u_char buf2[1024];
+	char buf[SHA512_DIGEST_LENGTH*2 + 24]; /* Accounts for the HTML comment */
+    u_char buf2[SHA512_DIGEST_LENGTH*2]; /* Could be smaller... */
     size_t index;
 	u_char md[SHA512_DIGEST_LENGTH];
+
+    struct timeval tv;
+    gettimeofday(&tv, 0);
 	
-	snprintf(buf, 512, "%s %d ", ctx->randpad.data, (int)time(NULL));
+	snprintf(buf, sizeof(buf), "%s %ld %ld", ctx->randpad.data, 
+        tv.tv_sec, tv.tv_usec);
 
 	SHA512((const unsigned char*)buf, strlen(buf), md);
     index = (size_t)md[SHA512_DIGEST_LENGTH-2];
@@ -114,7 +118,7 @@ ngx_http_randpad(ngx_http_randpad_ctx_t *ctx, ngx_http_request_t *r)
     randpad_b64(buf2, md);
     buf2[index] = 0;
 
-	snprintf(buf, 512, "<!-- Padding: %s %d -->", buf2, index);
+	snprintf(buf, sizeof(buf), "<!-- Padding: %s -->", buf2);
 
 	ctx->randpad.len = strlen(buf);
     ctx->randpad.data = ngx_pcalloc(r->pool, strlen(buf));
